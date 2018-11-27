@@ -1,0 +1,82 @@
+<html>
+<head>
+	<title>Dwigth reaction</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<style>
+	* {background-color: black;}
+	</style>
+</head>
+<body>
+
+<div class="result">
+</div>
+
+<script>
+	const PUBLIC_KEY = 'dc6zaTOxFJmzC';
+	const BASE_URL = '//api.giphy.com/v1/gifs/';
+	const ENDPOINT = 'search';
+	const LIMIT = 1;
+	const RATING = 'pg';
+
+	const KEY_SEARCH = "Dwight Schrute";
+
+
+	let $resultWrapper = $('.result');
+	let currentTimeout;
+
+	let query = {
+	  text: null,
+	  offset: 0,
+	  request() {
+	    return `${BASE_URL}${ENDPOINT}?q=${this.text}&limit=${LIMIT}&rating=${RATING}&offset=${this.offset}&api_key=${PUBLIC_KEY}`;
+	  },
+	  fetch(callback) {
+	    $.getJSON(this.request())
+	      .success(data => {
+	        let results = data.data;
+	        
+	        if (results.length) {
+	          let url = results[0].images.downsized.url;
+	          callback(url);
+	        } else {
+	          callback('');
+	        }
+	      })
+	      .fail(error => {
+	        console.log(error);
+	      });
+	  }
+	}
+
+	function buildImg(src = '//giphy.com/embed/xv3WUrBxWkUPC', classes = 'gif hidden') {
+	  return `<img src="${src}" class="${classes}" alt="gif" style="width:100%; height: 100%"/>`;
+	}
+
+	function clickImage() {
+		query.offset = Math.floor(Math.random() * 25);
+		query.fetch(url => {
+			if (url.length) {
+			  $resultWrapper.html(buildImg(url));
+			} 
+		});
+	}
+
+	function find() {
+	    $('.gif').addClass('hidden');
+	    query.text = KEY_SEARCH;
+	  	query.offset = Math.floor(Math.random() * 25);
+	    if (query.text && query.text.length) {
+	      	query.fetch(url => {
+	        if (url.length) {
+	          	$resultWrapper.html(buildImg(url));
+	        }
+	      });
+	    }
+	  }
+
+	window.onload = function() {
+		find();
+	};
+</script>
+</body>
+</html>
