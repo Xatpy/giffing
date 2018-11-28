@@ -7,7 +7,7 @@ https://xatpy.github.io/giffing/
 - Keys `R`, `A`or `I^: Activate auto mode, changing gif each 1,5 seconds
 - Click or press any other key to change manually to a new random gif
 ### Searches
-/key?GIF_SEARCH
+/?key=GIF_SEARCH
 
 ## Examples
 - https://xatpy.github.io/giffing/?key=soccer
